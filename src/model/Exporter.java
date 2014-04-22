@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -36,7 +37,7 @@ public class Exporter {
 		DXFDocument doc = parser.getDocument();
 		//the SVG will be emitted as SAX-Events
 		//see org.xml.sax.ContentHandler for more information
-		ContentHandler myhandler = new ContentHandlerImpl();
+		//ContentHandler myhandler = new ContentHandlerImpl();
 		//the output - create first a SAXGenerator (SVG here)
 		SAXGenerator generator = new SVGGenerator();
 		
@@ -53,12 +54,56 @@ public class Exporter {
 			serializer = new SAXPDFSerializer();
 			break;
 		}
-		//setup properties
-		generator.setProperties(new HashMap<Object, Object>());
+		HashMap<String, String> serializerProperties = new HashMap<String, String>();
+		serializerProperties.put("dpi", "800");
+		serializerProperties.put("quality", "300");
+	//	serializerProperties.put("width", "5000px");
+	//	serializerProperties.put("height", "5000px");
+		serializerProperties.put("orientation", "portrait");
+		serializerProperties.put("paper", "a4");
+		serializer.setProperties(serializerProperties);
+		
+		
+		
+		//setup properties		
+		HashMap<String, String> properties = new HashMap<String, String>();
+	//	properties.put("width", "5000px");
+	//	properties.put("height", "5000px");
+	//	properties.put("bounds-rule", "paperspace");
+		
+		/*
+		 * Propriedades aceitas
+		 * 
+		 * -> bounds-rule  (defines the way of calculation/setup the bounds of the Document)
+		 * 			Valores: * kabeja
+		 * 					 * paperspace
+		 * 					 * Paperspace-Limits
+		 * 					 * Modelspace
+		 * 					 * Modelspace-Limits	
+		 * 
+		 * -> output-style
+		 * 			Valores: * layout
+		 * 					 * plotsetting
+		 * 					 * output-style-name
+		 * -> width   
+		 * 		unidades aceitas: * in (inches)
+		 * 						  * mm (milimetros)
+		 * 						  * px (pixels)
+		 * -> height
+		 * 		unidades aceitas: * in (inches)
+		 * 						  * mm (milimetros)
+		 * 						  * px (pixels)
+		 * 
+		 * -> svg-overflow: ? 
+		 * */
+		
+		generator.setProperties(properties);
 		//start the output
 		try {
 			System.out.println("parsing...");
 			serializer.setOutput(out);
+			
+						
 			generator.generate(doc,serializer,new HashMap<Object, Object>());
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
