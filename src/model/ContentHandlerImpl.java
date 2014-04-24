@@ -1,4 +1,6 @@
 package model;
+import org.kabeja.batik.tools.SAXJPEGSerializer;
+import org.kabeja.batik.tools.SAXPNGSerializer;
 import org.kabeja.xml.SAXSerializer;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -6,7 +8,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 
-public class ContentHandlerImpl implements ContentHandler{
+public class ContentHandlerImpl extends SAXJPEGSerializer{
 
 	@Override
 	public void characters(char[] arg0, int arg1, int arg2) throws SAXException {
@@ -82,7 +84,10 @@ public class ContentHandlerImpl implements ContentHandler{
 	public void startElement(String arg0, String arg1, String arg2,
 			Attributes arg3) throws SAXException {
 		// TODO Auto-generated method stub
-
+		System.out.println("startElement----------------" );
+		System.out.println("arg0: "+arg0.toString() );
+		System.out.println("arg1: "+arg1 );
+		System.out.println("arg2: "+arg2 );
 	}
 
 	@Override
