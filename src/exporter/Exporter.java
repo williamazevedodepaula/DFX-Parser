@@ -53,7 +53,7 @@ public class Exporter {
 		this.generateOutput(outputFile,Exporter.DOCUMENT_TYPE_PNG,options);
 	}
 	
-	public void generatePNGoutput(ParserOptions options) throws SAXException, FileNotFoundException{
+	public void generatePNGoutput(ParserOptions options) throws SAXException{
 		this.generateOutput(Exporter.DOCUMENT_TYPE_PNG,options);
 	}
 	
@@ -61,7 +61,7 @@ public class Exporter {
 		this.generateOutput(outputFile,Exporter.DOCUMENT_TYPE_JPEG,options);
 	}
 	
-	public void generateJPEGoutput(ParserOptions options) throws SAXException, FileNotFoundException{
+	public void generateJPEGoutput(ParserOptions options) throws SAXException{
 		this.generateOutput(Exporter.DOCUMENT_TYPE_JPEG,options);
 	}
 	
@@ -69,7 +69,7 @@ public class Exporter {
 		this.generateOutput(outputFile,Exporter.DOCUMENT_TYPE_TIF,options);
 	}
 	
-	public void generateTIFoutput(ParserOptions options) throws SAXException, FileNotFoundException{
+	public void generateTIFoutput(ParserOptions options) throws SAXException{
 		this.generateOutput(Exporter.DOCUMENT_TYPE_TIF,options);
 	}
 	
@@ -77,7 +77,7 @@ public class Exporter {
 		this.generateOutput(outputFile,Exporter.DOCUMENT_TYPE_PDF,options);
 	}
 	
-	public void generatePDFoutput(ParserOptions options) throws SAXException, FileNotFoundException{
+	public void generatePDFoutput(ParserOptions options) throws SAXException{
 		this.generateOutput(Exporter.DOCUMENT_TYPE_PDF,options);
 	}
 	
@@ -86,7 +86,7 @@ public class Exporter {
 		this.generateOutput(format,options);
 	}
 	
-	public void generateOutput(int format, ParserOptions options) throws SAXException, FileNotFoundException{
+	public void generateOutput(int format, ParserOptions options) throws SAXException{
 		SAXGenerator  generator = new SVGGenerator();		
 		SAXSerializer serializer = null;
 		//out = new FileOutputStream(outputFile);
