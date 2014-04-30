@@ -71,9 +71,12 @@ public class StandExtrator{
 		}
 		
 		ParserOptions options = new ParserOptions();
-		options.setDpi(500);
+		options.setDpi(1000);
 		options.setQuality(1000);
-		options.setPaper(ParserOptions.PAPER_A3);
+		//options.setPaper(ParserOptions.PAPER_A3);
+		options.setHeight(2000);
+		options.setWidth(2000);
+		options.setUnit(ParserOptions.UNIT_PIXEL);
 		options.setBoundsRule(ParserOptions.BOUNDS_RULE_MODELSPACE);
 		options.setOutputStyle(ParserOptions.OUTPUT_STYLE_NAME);
 		options.setOrientation(ParserOptions.ORIENTATION_LANDSCAPE);
