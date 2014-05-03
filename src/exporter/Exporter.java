@@ -3,12 +3,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
+
 import org.xml.sax.SAXException;
 import org.kabeja.batik.tools.SAXJPEGSerializer;
 import org.kabeja.batik.tools.SAXPDFSerializer;
 import org.kabeja.batik.tools.SAXPNGSerializer;
 import org.kabeja.batik.tools.SAXTIFFSerializer;
 import org.kabeja.dxf.DXFDocument;
+import org.kabeja.dxf.DXFEntity;
 import org.kabeja.dxf.DXFLayer;
 import org.kabeja.parser.DXFParser;
 import org.kabeja.parser.ParseException;
@@ -193,4 +196,5 @@ public class Exporter {
         	return layer;
         }
 	}
+		
 }
