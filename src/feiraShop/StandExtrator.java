@@ -123,16 +123,16 @@ public class StandExtrator{
 			 * de medida utilizada.
 			 * O eixo Y é invertido, de forma que as coordenadas negativas se tornam positivas
 			 * 
-			 *        |             						|
-			 *(0,0) --|-----------------> + X 			  --| _____------------------> + X
-			 *        |										|(FIGURA)
-			 *        |          _____						| ------
+			 *        |                                     |
+			 *(0,0) --|-----------------> + X             --| _____------------------> + X
+			 *        |                                     |(FIGURA)
+			 *        |          _____                      | ------
 			 *        |         (FIGURA)       ====>        |      
-			 *        |          ------						|
-			 *        |          							|
-			 *        |										|
-			 *        \/								    \/
-			 *      - Y									  + Y	
+			 *        |          ------                     |
+			 *        |                                     |
+			 *        |                                     |
+			 *        \/                                    \/
+			 *      - Y                                 + Y	
 			 */			
 			
 			Bounds bounds = text.getBounds();
