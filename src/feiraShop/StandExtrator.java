@@ -142,6 +142,10 @@ public class StandExtrator{
 			stand.setX(bounds.getMinimumX()-coordenadasTranslacao.getX());
 			stand.setY(-bounds.getMaximumY()-coordenadasTranslacao.getY());
 			
+			//Desloca as coordenadas para o meio do elemento
+			//stand.setX(stand.getY()+bounds.getHeight()/2);
+			//stand.setY(stand.getX()+bounds.getWidth()/2);
+			
 			
 			/*
 			 * Reescala as coordenadas, convertendo do plano cartesiano translatado do CAD
@@ -168,21 +172,38 @@ public class StandExtrator{
 			 * 
 			 *    largura_esperada = ((largura_atual * altura_nova) / altura_atual)
 			 *    
-			 *    x_esperado = (largura_esperada * x_atual)/largura_antiga
+			 *    x_esperado = (largura_esperada * x_antigo)/largura_antiga
 			 *    
 			 *    diferenca  = largura_nova - largura_esperada
 			 *    
 			 *    x_novo = x_esperado + diferenca/2
 			 */
 			if(height>width){
-				stand.setY((options.getHeight() * stand.getY()) / height);
 				
-				double largEsperada = ((width*options.getHeight())/height);				
-				double xEsperado = (largEsperada * stand.getX()) / width;
-				double diference = options.getWidth()-largEsperada;
-				stand.setX(xEsperado+(diference/2));				
-
-
+				double yFinalAntigo = stand.getEndY();
+				double xFinalAntigo = stand.getEndX();
+				double yAntigo      = stand.getY();
+				double xAntigo      = stand.getX();
+				
+				double yFinalNovo   = (options.getHeight() * yFinalAntigo) / height;
+				double yNovo        = (options.getHeight() * yAntigo     ) / height; 
+				stand.setY(yNovo);
+				stand.setHeight(yFinalNovo-yNovo);								
+				
+				
+				double largEsperada = ((width*options.getHeight()) /height);				
+				double xEsperado    = (largEsperada * xAntigo    ) / width;				 
+				double diference    = options.getWidth()-largEsperada;
+				double xNovo        = xEsperado+(diference/2);
+				stand.setX(xNovo);				
+				
+				//Utiliza o mesmo processo para encontrar as coordenadas do fim do elemento
+				double xFinalEsperado = (largEsperada * xFinalAntigo) / width;
+				double xFinalNovo     = xFinalEsperado + (diference/2);
+				
+				//Obtém o tamanho do elemento através das coordenadas inicial e final
+				stand.setWidth(xFinalNovo-xNovo);
+				
 				
 		   /*
 			* Caso contrário (se a altura do modela na planta for maior ou igual à largura),
@@ -212,11 +233,21 @@ public class StandExtrator{
 			}else{
 				stand.setX((options.getWidth() * stand.getX()) / width);
 				
+				double yFinalAntigo = stand.getEndY();
+				
 				double alturaEsperada = ((height*options.getWidth())/width);				
 				double yEsperado = (alturaEsperada * stand.getY()) / height;
 				double diference = options.getHeight()-alturaEsperada;
-				stand.setX(yEsperado+(diference/2));				
+				stand.setX(yEsperado+(diference/2));
+				
+				//Utiliza o mesmo processo para encontrar as coordenadas do fim do elemento
+				double yFinalEsperado = (alturaEsperada * yFinalAntigo) / height;
+				double yFinalNovo     = yFinalEsperado + (diference/2);
+				
+				//Obtém o tamanho do elemento através das coordenadas inicial e final
+				stand.setHeight(yFinalNovo-stand.getY());
 			}
+			
 			
 			stands.add(stand);			
 		}

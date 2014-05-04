@@ -47,6 +47,6 @@ public class Stand {
 		return this.getX()+(this.getWidth()/2);
 	} 
 	public double getCenterY(){
-		return this.getEndY() + (this.getHeight()/2);
+		return this.getY() + (this.getHeight()/2);
 	}		
 }
