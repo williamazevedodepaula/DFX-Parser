@@ -1,4 +1,5 @@
 package exporter;
+import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,6 +11,8 @@ import org.kabeja.batik.tools.SAXJPEGSerializer;
 import org.kabeja.batik.tools.SAXPDFSerializer;
 import org.kabeja.batik.tools.SAXPNGSerializer;
 import org.kabeja.batik.tools.SAXTIFFSerializer;
+import org.kabeja.dxf.Bounds;
+import org.kabeja.dxf.DXFCircle;
 import org.kabeja.dxf.DXFDocument;
 import org.kabeja.dxf.DXFEntity;
 import org.kabeja.dxf.DXFLayer;
@@ -33,6 +36,9 @@ public class Exporter {
 	DXFParser parser;
 	DXFDocument doc;
 	
+	private double outputWidth;
+	private double outputHeight;
+	
 	public Exporter(){
 		in  = null;
 		out = null;
@@ -42,7 +48,7 @@ public class Exporter {
 	public void setInputFile(String sourceFile) throws FileNotFoundException, ParseException{
 		in  = new FileInputStream(sourceFile);
 		
-		parser = (DXFParser) ParserBuilder.createDefaultParser();
+		parser = (DXFParser) ParserBuilder.createDefaultParser();		
 		
 		parser.parse(in,DXFParser.DEFAULT_ENCODING);
 		doc = parser.getDocument();
@@ -125,15 +131,61 @@ public class Exporter {
 		
 		serializerProperties.put("dpi"    , Integer.toString(options.getDpi()));
 		serializerProperties.put("quality", Integer.toString(options.getQuality()));
+		
+		Bounds docBounds = doc.getBounds();
+		
+		//Como o padrão é landscape, heigth e width são invertidos
+		double drawWidth   = docBounds.getHeight();//docBounds.getMaximumX()-docBounds.getMinimumX();
+		double drawHeight  = docBounds.getWidth();//docBounds.getMaximumY()-docBounds.getMinimumY();
+		
 		if(options.getPaper() == null){
-			serializerProperties.put("width"  , Integer.toString(options.getWidth())+options.getUnit());
-			serializerProperties.put("height" , Integer.toString(options.getHeight())+options.getUnit());
-			generatorProperties.put("width"  ,  Integer.toString(options.getWidth())+options.getUnit());
-			generatorProperties.put("height" ,  Integer.toString(options.getHeight())+options.getUnit());
+			
+			double width  = options.getWidth();
+			double height = options.getHeight();			
+			
+			if(options.isProportional()){
+				if(drawHeight>drawWidth){
+					width   = drawWidth*(options.getHeight()/drawHeight);
+				}else{
+					height  = drawHeight*(options.getWidth()/drawWidth);
+				}							
+			}
+
+			outputWidth  = width;
+			outputHeight = height;
+			
+			if(options.getOrientation().equals(ParserOptions.ORIENTATION_AUTO)){
+				if(width>height){
+					serializerProperties.put("orientation",ParserOptions.ORIENTATION_LANDSCAPE);
+					double aux = width;
+					width  = height;
+					height = aux;
+				}else{
+					serializerProperties.put("orientation",ParserOptions.ORIENTATION_PORTRAIT);
+				}
+			}else{
+				serializerProperties.put("orientation",options.getOrientation());
+			}
+								
+			serializerProperties.put("width"  , Integer.toString((int)width)+options.getUnit());
+			serializerProperties.put("height" , Integer.toString((int)height)+options.getUnit());
+			generatorProperties.put("width"  ,  Integer.toString((int)width)+options.getUnit());
+			generatorProperties.put("height" ,  Integer.toString((int)height)+options.getUnit());
 		}else{
 			serializerProperties.put("paper", options.getPaper());
+			
+			if(options.getOrientation().equals(ParserOptions.ORIENTATION_AUTO)){
+				if(drawWidth>drawHeight){
+					serializerProperties.put("orientation",ParserOptions.ORIENTATION_LANDSCAPE);
+				}else{
+					serializerProperties.put("orientation",ParserOptions.ORIENTATION_PORTRAIT);
+				}
+			}else{
+				serializerProperties.put("orientation",options.getOrientation());
+			}
 		}
-		serializerProperties.put("orientation", options.getOrientation());				
+				
+				
 		if(options.getBoundsRule() != null){
 			generatorProperties.put("bounds-rule", options.getBoundsRule());
 		}
@@ -173,6 +225,7 @@ public class Exporter {
 		generator.setProperties(generatorProperties);
 		serializer.setOutput(out);				
 		generator.generate(doc,serializer,new HashMap<Object, Object>());
+		String x = "";
 		
 	}
 	
@@ -195,6 +248,22 @@ public class Exporter {
         }else{
         	return layer;
         }
+	}
+
+	public double getOutputWidth() {
+		return outputWidth;
+	}
+
+	public void setOutputWidth(double outputWidth) {
+		this.outputWidth = outputWidth;
+	}
+
+	public double getOutputHeight() {
+		return outputHeight;
+	}
+
+	public void setOutputHeight(double outputHeight) {
+		this.outputHeight = outputHeight;
 	}
 		
 }

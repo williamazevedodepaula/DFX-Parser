@@ -76,13 +76,13 @@ public class StandExtrator{
 		ParserOptions options = new ParserOptions();
 		options.setDpi(1000);
 		options.setQuality(1000);
-		//options.setPaper(ParserOptions.PAPER_A3);
 		options.setHeight(2000);
-		options.setWidth(2000);
+		options.setWidth (2000);
 		options.setUnit(ParserOptions.UNIT_PIXEL);
-		options.setBoundsRule(ParserOptions.BOUNDS_RULE_MODELSPACE);
+		options.setBoundsRule (ParserOptions.BOUNDS_RULE_MODELSPACE);
 		options.setOutputStyle(ParserOptions.OUTPUT_STYLE_NAME);
-		options.setOrientation(ParserOptions.ORIENTATION_LANDSCAPE);
+		options.setOrientation(ParserOptions.ORIENTATION_AUTO);
+		options.setProportional(true);
 		options.setSvgOverflow(true);
 		
 		try {
@@ -193,7 +193,7 @@ public class StandExtrator{
 				
 				double largEsperada = ((width*options.getHeight()) /height);				
 				double xEsperado    = (largEsperada * xAntigo    ) / width;				 
-				double diference    = options.getWidth()-largEsperada;
+				double diference    = exporter.getOutputWidth()-largEsperada;
 				double xNovo        = xEsperado+(diference/2);
 				stand.setX(xNovo);				
 				
@@ -231,13 +231,13 @@ public class StandExtrator{
 			*    y_novo = y_esperado + diferenca/2
 			*/
 			}else{
-				stand.setX((options.getWidth() * stand.getX()) / width);
+				stand.setX((exporter.getOutputWidth() * stand.getX()) / width);
 				
 				double yFinalAntigo = stand.getEndY();
 				
-				double alturaEsperada = ((height*options.getWidth())/width);				
+				double alturaEsperada = ((height*exporter.getOutputWidth())/width);				
 				double yEsperado = (alturaEsperada * stand.getY()) / height;
-				double diference = options.getHeight()-alturaEsperada;
+				double diference = exporter.getOutputHeight()-alturaEsperada;
 				stand.setX(yEsperado+(diference/2));
 				
 				//Utiliza o mesmo processo para encontrar as coordenadas do fim do elemento

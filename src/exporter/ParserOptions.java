@@ -10,6 +10,7 @@ public class ParserOptions {
 	
 	public static final String ORIENTATION_LANDSCAPE = "landscape";
 	public static final String ORIENTATION_PORTRAIT  = "portrait";
+	public static final String ORIENTATION_AUTO      = "auto";//identifica se é ORIENTATION_LANDSCAPE ou ORIENTATION_PORTRAIT através das dimensões 
 	
 	public static final String BOUNDS_RULE_MODELSPACE 		 = "Modelspace";
 	public static final String BOUNDS_RULE_MODELSPACE_LIMITS = "Modelspace-Limits";
@@ -35,14 +36,16 @@ public class ParserOptions {
 	private String  unit;
 	private String  outputStyle;
 	private boolean svgOverflow;
+	private boolean proportional;
 	
 	public ParserOptions(){
 		this.paper 		 = PAPER_A4;
-		this.orientation = ORIENTATION_PORTRAIT;
+		this.orientation = ORIENTATION_AUTO;
 		this.boundsRule  = BOUNDS_RULE_MODELSPACE;
 		this.unit        = UNIT_PIXEL;
 		this.outputStyle = null;
 		this.svgOverflow = false;
+		this.proportional = false;
 	}
 	
 	public String getPaper() {
@@ -114,5 +117,13 @@ public class ParserOptions {
 
 	public void setSvgOverflow(boolean svgOverflow) {
 		this.svgOverflow = svgOverflow;
+	}
+
+	public boolean isProportional() {
+		return proportional;
+	}
+
+	public void setProportional(boolean proportional) {
+		this.proportional = proportional;
 	}		
 }
